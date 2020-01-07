@@ -27,6 +27,11 @@ I have used MVVM to build my project.<br />
 * [SimpleRatingBar](https://github.com/ome450901/SimpleRatingBar) - For Rating Bar <br />
 
 
+## <b>To Do in Future: </b> <br />
+* Use Android Navigation Component Library.<br />
+* Apply some Unit Tests.<br />
+* Kotlin Version (will be in a seperate branch).<br />
+
 ## License
 
     Copyright (C) 2020 Mina Mikhail
