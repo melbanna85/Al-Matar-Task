@@ -7,6 +7,10 @@ This repo for Al-Matar Android Task using www.themoviedb.org
 * Cache the movies list and every movie details to show it from Room DB in case no internet connection. <br />
 
 
+| Home Screen                    | Movie Details Screen              | 
+|:------------------------------:|:---------------------------------:|
+|![](https://raw.githubusercontent.com/Mina-Mikhail/Al-Matar-Task/master/Shots/Home%20Screen.jpg) | ![](https://raw.githubusercontent.com/Mina-Mikhail/Al-Matar-Task/master/Shots/Movie%20Details%20Screen.jpg) |
+
 ## <b>Project Architecture: </b> <br />
 I have used MVVM to build my project.<br />
 
