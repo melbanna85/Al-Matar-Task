@@ -34,7 +34,7 @@ I have used MVVM to build my project.<br />
 
 
 ## <b>To Do in Future: </b> <br />
-- [x]  Use Android Navigation Component Library.<br /> ✅
+- [x]  Use Android Navigation Component Library.<br />
 - [ ]  Apply some Unit Tests.<br />
 - [ ]  Kotlin Version (will be in a separate branch).<br />
 
