@@ -3,7 +3,7 @@ package com.mina_mikhail.almatar_task.di;
 import com.mina_mikhail.almatar_task.data.repo.MovieDetailsRepository;
 import com.mina_mikhail.almatar_task.data.repo.PopularMoviesRepository;
 import com.mina_mikhail.almatar_task.ui.movie_details.MovieDetailsViewModel;
-import com.mina_mikhail.almatar_task.ui.movies.MoviesViewModel;
+import com.mina_mikhail.almatar_task.ui.popular_movies.PopularMoviesViewModel;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -15,7 +15,7 @@ public interface AppComponent {
 
   MovieDetailsRepository getMovieDetailsRepository();
 
-  void inject(MoviesViewModel moviesViewModel);
+  void inject(PopularMoviesViewModel popularMoviesViewModel);
 
   void inject(MovieDetailsViewModel movieDetailsViewModel);
 }

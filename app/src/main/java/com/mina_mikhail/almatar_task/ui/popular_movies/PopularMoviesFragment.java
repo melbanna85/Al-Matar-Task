@@ -1,31 +1,29 @@
-package com.mina_mikhail.almatar_task.ui.movies;
+package com.mina_mikhail.almatar_task.ui.popular_movies;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import com.mina_mikhail.almatar_task.BR;
 import com.mina_mikhail.almatar_task.R;
 import com.mina_mikhail.almatar_task.data.enums.NetworkState;
 import com.mina_mikhail.almatar_task.data.model.Movie;
-import com.mina_mikhail.almatar_task.databinding.ActivityMoviesBinding;
-import com.mina_mikhail.almatar_task.ui.base.BaseActivity;
-import com.mina_mikhail.almatar_task.ui.movie_details.MovieDetailsActivity;
+import com.mina_mikhail.almatar_task.databinding.FragmentPopularMoviesBinding;
+import com.mina_mikhail.almatar_task.ui.base.BaseFragment;
 import com.mina_mikhail.almatar_task.utils.CommonUtils;
 import com.mina_mikhail.almatar_task.utils.Constants;
-import com.mina_mikhail.raseedi_task.BR;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviesActivity
-    extends BaseActivity<ActivityMoviesBinding, MoviesViewModel>
+public class PopularMoviesFragment
+    extends BaseFragment<FragmentPopularMoviesBinding, PopularMoviesViewModel>
     implements MoviesAdapter.MoviesListener {
 
-  public static void open(Activity activity) {
-    Intent intent = new Intent(activity, MoviesActivity.class);
-    activity.startActivity(intent);
-  }
-
-  private MoviesViewModel mViewModel;
+  private PopularMoviesViewModel mViewModel;
+  private NavController navController;
 
   private MoviesAdapter moviesAdapter;
   private List<Movie> movies = new ArrayList<>();
@@ -37,30 +35,43 @@ public class MoviesActivity
 
   @Override
   public int getLayoutId() {
-    return R.layout.activity_movies;
+    return R.layout.fragment_popular_movies;
   }
 
   @Override
-  public MoviesViewModel getViewModel() {
+  public PopularMoviesViewModel getViewModel() {
     return mViewModel;
   }
 
   @Override
+  public boolean hasOptionMenu() {
+    return false;
+  }
+
+  @Override
   protected void setUpViewModel() {
-    mViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
+    mViewModel = ViewModelProviders.of(this)
+        .get(PopularMoviesViewModel.class);
     getViewDataBinding().setViewModel(getViewModel());
     initBaseObservables();
   }
 
   @Override
-  protected void onStart() {
+  public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    navController = Navigation.findNavController(view);
+  }
+
+  @Override
+  public void onStart() {
     super.onStart();
 
     moviesAdapter.registerListener(this);
   }
 
   @Override
-  protected void onStop() {
+  public void onStop() {
     moviesAdapter.unRegisterListener();
 
     super.onStop();
@@ -68,23 +79,30 @@ public class MoviesActivity
 
   @Override
   protected void setUpViews() {
-    setupToolbar();
-
     initMoviesRecyclerView();
 
     getData();
   }
 
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    setupToolbar();
+  }
+
   private void setupToolbar() {
-    setSupportActionBar(getViewDataBinding().includedToolbar.toolbar);
-    if (getSupportActionBar() != null) {
-      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      getSupportActionBar().setDisplayShowHomeEnabled(true);
+    getBaseActivity()
+        .setSupportActionBar(getViewDataBinding().includedToolbar.toolbar);
+    if (getBaseActivity().getSupportActionBar() != null) {
+      getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      getBaseActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
     getViewDataBinding().includedToolbar.toolbar
         .setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_white));
-    getViewDataBinding().includedToolbar.toolbar.setNavigationOnClickListener(v -> onBackPressed());
-    setTitle("");
+    getViewDataBinding().includedToolbar.toolbar
+        .setNavigationOnClickListener(v -> getBaseActivity().onBackPressed());
+    getBaseActivity().setTitle("");
     getViewDataBinding().includedToolbar.toolbarTitle
         .setText(getResources().getString(R.string.popular_movies));
   }
@@ -107,7 +125,6 @@ public class MoviesActivity
       if (state != null) {
         if (state == NetworkState.LOADED) {
           if (!getViewModel().getMoviesData().getData().isEmpty()) {
-            showMessage(getViewModel().getMoviesData().getMessage());
             moviesAdapter.replaceItems(getViewModel().getMoviesData().getData());
             showData();
           } else {
@@ -124,7 +141,10 @@ public class MoviesActivity
 
   @Override
   public void onMovieClicked(Movie movie) {
-    MovieDetailsActivity.open(this, movie.getId());
+    PopularMoviesFragmentDirections.ActionNext nextAction =
+        PopularMoviesFragmentDirections.actionNext();
+    nextAction.setMovieId(movie.getId());
+    navController.navigate(nextAction);
   }
 
   private void showData() {

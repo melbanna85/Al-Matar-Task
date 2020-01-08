@@ -6,7 +6,7 @@
   <data>
     <variable
         name="viewModel"
-        type="com.mina_mikhail.almatar_task.ui.movies.MoviesViewModel"
+        type="com.mina_mikhail.almatar_task.ui.popular_movies.PopularMoviesViewModel"
         />
   </data>
 

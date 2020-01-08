@@ -58,8 +58,8 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     mViewDataBinding.executePendingBindings();
 
     setUpViewModel();
-    setUpObservables();
     setUpViews();
+    setUpObservables();
   }
 
   public BaseActivity getBaseActivity() {

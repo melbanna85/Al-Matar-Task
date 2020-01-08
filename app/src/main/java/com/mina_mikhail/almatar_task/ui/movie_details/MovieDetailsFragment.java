@@ -1,28 +1,21 @@
 package com.mina_mikhail.almatar_task.ui.movie_details;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
+import com.mina_mikhail.almatar_task.BR;
 import com.mina_mikhail.almatar_task.R;
 import com.mina_mikhail.almatar_task.data.enums.NetworkState;
 import com.mina_mikhail.almatar_task.data.model.ProductionCompany;
-import com.mina_mikhail.almatar_task.databinding.ActivityMovieDetailsBinding;
-import com.mina_mikhail.almatar_task.ui.base.BaseActivity;
+import com.mina_mikhail.almatar_task.databinding.FragmentMovieDetailsBinding;
+import com.mina_mikhail.almatar_task.ui.base.BaseFragment;
 import com.mina_mikhail.almatar_task.ui.gallery_slider.GallerySliderActivity;
 import com.mina_mikhail.almatar_task.utils.CommonUtils;
-import com.mina_mikhail.almatar_task.utils.Constants;
-import com.mina_mikhail.raseedi_task.BR;
 import java.util.List;
 
-public class MovieDetailsActivity
-    extends BaseActivity<ActivityMovieDetailsBinding, MovieDetailsViewModel> {
-
-  public static void open(Activity activity, int movieID) {
-    Intent intent = new Intent(activity, MovieDetailsActivity.class);
-    intent.putExtra(Constants.KEY_MOVIE_ID, movieID);
-    activity.startActivity(intent);
-  }
+public class MovieDetailsFragment
+    extends BaseFragment<FragmentMovieDetailsBinding, MovieDetailsViewModel> {
 
   private MovieDetailsViewModel mViewModel;
 
@@ -35,7 +28,7 @@ public class MovieDetailsActivity
 
   @Override
   public int getLayoutId() {
-    return R.layout.activity_movie_details;
+    return R.layout.fragment_movie_details;
   }
 
   @Override
@@ -44,16 +37,20 @@ public class MovieDetailsActivity
   }
 
   @Override
+  public boolean hasOptionMenu() {
+    return false;
+  }
+
+  @Override
   protected void setUpViewModel() {
-    mViewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
+    mViewModel = ViewModelProviders.of(this)
+        .get(MovieDetailsViewModel.class);
     getViewDataBinding().setViewModel(getViewModel());
     initBaseObservables();
   }
 
   @Override
   protected void setUpViews() {
-    setupToolbar();
-
     getIntentData();
 
     getData();
@@ -61,20 +58,30 @@ public class MovieDetailsActivity
     getViewDataBinding().generalInclude.reloadBtn.setOnClickListener(v -> getData());
   }
 
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    setupToolbar();
+  }
+
   private void getIntentData() {
-    movieID = getIntent().getIntExtra(Constants.KEY_MOVIE_ID, 0);
+    if (getArguments() != null) {
+      MovieDetailsFragmentArgs args = MovieDetailsFragmentArgs.fromBundle(getArguments());
+      movieID = args.getMovieId();
+    }
   }
 
   private void setupToolbar() {
-    setSupportActionBar(getViewDataBinding().includedToolbar.toolbar);
-    if (getSupportActionBar() != null) {
-      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      getSupportActionBar().setDisplayShowHomeEnabled(true);
+    getBaseActivity().setSupportActionBar(getViewDataBinding().includedToolbar.toolbar);
+    if (getBaseActivity().getSupportActionBar() != null) {
+      getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      getBaseActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
     getViewDataBinding().includedToolbar.toolbar
         .setNavigationIcon(getResources().getDrawable(R.drawable.ic_back_white));
-    getViewDataBinding().includedToolbar.toolbar.setNavigationOnClickListener(v -> onBackPressed());
-    setTitle("");
+    getViewDataBinding().includedToolbar.toolbar
+        .setNavigationOnClickListener(v -> getBaseActivity().onBackPressed());
+    getBaseActivity().setTitle("");
   }
 
   private void getData() {
@@ -88,8 +95,6 @@ public class MovieDetailsActivity
       if (state != null) {
         if (state == NetworkState.LOADED) {
           if (getViewModel().getMovieDetailsData().getData() != null) {
-            showMessage(getViewModel().getMovieDetailsData().getMessage());
-
             getViewDataBinding().setMovie(getViewModel().getMovieDetailsData().getData());
             getViewDataBinding().rateAmount
                 .setRating(getViewModel().getMovieDetailsData().getData().getVote_average());
@@ -122,13 +127,13 @@ public class MovieDetailsActivity
 
     getViewModel().onPosterClicked().observe(this, images -> {
       if (images != null && !images.isEmpty()) {
-        GallerySliderActivity.open(this, images, 0);
+        GallerySliderActivity.open(getBaseActivity(), images, 0);
       }
     });
 
     getViewModel().onBackdropClicked().observe(this, images -> {
       if (images != null && !images.isEmpty()) {
-        GallerySliderActivity.open(this, images, 1);
+        GallerySliderActivity.open(getBaseActivity(), images, 1);
       }
     });
   }

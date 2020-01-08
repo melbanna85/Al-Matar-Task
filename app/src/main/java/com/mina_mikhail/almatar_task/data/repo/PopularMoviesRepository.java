@@ -21,7 +21,6 @@ public class PopularMoviesRepository {
 
   public RemoteDataSource<List<Movie>> getMovies(String sortBy) {
     if (NetworkUtils.isNetworkConnected(MyApplication.getInstance())) {
-      System.out.println("call------>> " + this);
       return remoteDataSource.getMovies(sortBy);
     } else {
       return localDataSource.getMovies();

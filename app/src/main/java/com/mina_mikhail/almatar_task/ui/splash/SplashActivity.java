@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import com.mina_mikhail.almatar_task.R;
 import com.mina_mikhail.almatar_task.databinding.ActivitySplashBinding;
 import com.mina_mikhail.almatar_task.ui.base.BaseActivity;
-import com.mina_mikhail.almatar_task.ui.movies.MoviesActivity;
+import com.mina_mikhail.almatar_task.ui.main.MainActivity;
 
 public class SplashActivity
     extends BaseActivity<ActivitySplashBinding, SplashViewModel> {
@@ -41,6 +41,6 @@ public class SplashActivity
 
   @Override
   protected void setUpObservables() {
-    getViewModel().shouldStartApp().observe(this, v -> MoviesActivity.open(this));
+    getViewModel().shouldStartApp().observe(this, v -> MainActivity.open(this));
   }
 }

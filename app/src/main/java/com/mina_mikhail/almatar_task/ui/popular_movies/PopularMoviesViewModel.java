@@ -1,4 +1,4 @@
-package com.mina_mikhail.almatar_task.ui.movies;
+package com.mina_mikhail.almatar_task.ui.popular_movies;
 
 import com.mina_mikhail.almatar_task.app.MyApplication;
 import com.mina_mikhail.almatar_task.data.model.Movie;
@@ -9,7 +9,7 @@ import com.mina_mikhail.almatar_task.ui.base.BaseViewModel;
 import java.util.List;
 import javax.inject.Inject;
 
-public class MoviesViewModel
+public class PopularMoviesViewModel
     extends BaseViewModel {
 
   @Inject
@@ -17,7 +17,7 @@ public class MoviesViewModel
 
   private RemoteDataSource<List<Movie>> movies;
 
-  public MoviesViewModel() {
+  public PopularMoviesViewModel() {
     MyApplication.getInstance().getAppComponent().inject(this);
 
     // DaggerAppComponent.create().inject(this);

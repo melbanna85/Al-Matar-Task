@@ -4,7 +4,6 @@
     package="com.mina_mikhail.almatar_task">
 
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application
@@ -37,11 +36,7 @@
     </activity>
 
     <activity
-        android:name=".ui.movies.MoviesActivity"
-        android:screenOrientation="portrait" />
-
-    <activity
-        android:name=".ui.movie_details.MovieDetailsActivity"
+        android:name=".ui.main.MainActivity"
         android:screenOrientation="portrait" />
 
     <activity

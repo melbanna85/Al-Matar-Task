@@ -1,4 +1,4 @@
-package com.mina_mikhail.almatar_task.ui.movies;
+package com.mina_mikhail.almatar_task.ui.popular_movies;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
